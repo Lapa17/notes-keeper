@@ -9,6 +9,7 @@ type NoteFormType = {
 
 export const NoteForm = ({setNotes, notes}:NoteFormType) =>{
     const [content, setContent] = useState('')
+    const [title, setTitle] = useState('')
     const [editTag, setEditTag] = useState<boolean>(false)
     const [tags, setTags] = useState('')
     const [textareaStyle, setTextareaStyle] = useState<any>({
@@ -27,6 +28,9 @@ export const NoteForm = ({setNotes, notes}:NoteFormType) =>{
 
     function contentChanged(e:ChangeEvent<HTMLTextAreaElement>) {
         setContent(e.target.value);
+        if(editTag){
+            setTags(e.target.value)
+        }
     }
 
     function contentClicked(e:MouseEvent<HTMLTextAreaElement>) {
@@ -38,17 +42,27 @@ export const NoteForm = ({setNotes, notes}:NoteFormType) =>{
         if(e.key === '#'){
             setEditTag(true)
         }
+        if(e.key === ' '){
+            setEditTag(false)
+        }
     }
 
     function onAddClickHandler() {
-        const newNote = {id: v1(), noteTitle:'New note', noteDescription: content}
+        const newNote = {id: v1(), noteTitle:title, noteDescription: content}
         setNotes([...notes,newNote])
+    }
+
+    function onInputChangeHandler(e:ChangeEvent<HTMLInputElement>) {
+        setTitle(e.currentTarget.value)
     }
 
     return (
         <div style={{border:'1px solid black', borderRadius: '5px', width: '400px'}}>
             <input type={"text"} placeholder={'Title'} style={
-                {width: '100%',display: 'block', height: '30px', fontSize: '1.4em', padding: '5px'}}/>
+                {width: '100%',display: 'block', height: '30px', fontSize: '1.4em', padding: '5px'}}
+                   value={title}
+                onChange={onInputChangeHandler}
+            />
             <textarea placeholder={'Description'}
                       onInput={textareaHeight}
                       style={textareaStyle}
@@ -58,6 +72,7 @@ export const NoteForm = ({setNotes, notes}:NoteFormType) =>{
                       onKeyDown={onHashClick}
             />
             <button onClick={onAddClickHandler}>Add</button>
+            {tags}
         </div>
     )
 }
