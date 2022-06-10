@@ -7,6 +7,7 @@ export type NoteType = {
     id: string
     noteTitle: string
     noteDescription: string
+    tags:string[]
 }
 
 
@@ -28,9 +29,7 @@ export const Notes = () => {
             <h1>Notes</h1>
             <NoteForm setNotes={setNotes} notes={notes}/>
             {notes && notes.map((el) => <Note key={el.id}
-                                              id={el.id}
-                                              noteTitle={el.noteTitle}
-                                              noteDescription={el.noteDescription}
+                                              note={el}
                                               onDeleteClickHandler={onDeleteClickHandler}
             />)}
         </div>

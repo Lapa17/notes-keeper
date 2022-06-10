@@ -11,7 +11,8 @@ export const NoteForm = ({setNotes, notes}:NoteFormType) =>{
     const [content, setContent] = useState('')
     const [title, setTitle] = useState('')
     const [editTag, setEditTag] = useState<boolean>(false)
-    const [tags, setTags] = useState('')
+    const [tags, setTags] = useState<Array<string>>([''])
+    const [tag, setTag] = useState<string>('')
     const [textareaStyle, setTextareaStyle] = useState<any>({
         textAlign: "justfiy",
         width:'100%'
@@ -26,29 +27,33 @@ export const NoteForm = ({setNotes, notes}:NoteFormType) =>{
         })
     }
 
-    function contentChanged(e:ChangeEvent<HTMLTextAreaElement>) {
+    function contentChanged(e:ChangeEvent<HTMLInputElement> ) {
         setContent(e.target.value);
         if(editTag){
-            setTags(e.target.value)
+            //@ts-ignore
+            setTag(tag + e.nativeEvent.data)
+            console.log(tag)
         }
     }
 
-    function contentClicked(e:MouseEvent<HTMLTextAreaElement>) {
+    function contentClicked(e:MouseEvent<HTMLInputElement>) {
         // settyping(true);
         // setcontent(e.currentTarget);
     }
 
-    function onHashClick(e:KeyboardEvent<HTMLTextAreaElement>){
+    function onHashClick(e:KeyboardEvent<HTMLInputElement>){
         if(e.key === '#'){
             setEditTag(true)
         }
         if(e.key === ' '){
+            setTags([tag, ...tags])
+            setTag('')
             setEditTag(false)
         }
     }
 
     function onAddClickHandler() {
-        const newNote = {id: v1(), noteTitle:title, noteDescription: content}
+        const newNote = {id: v1(), noteTitle:title, noteDescription: content, tags}
         setNotes([...notes,newNote])
     }
 
@@ -63,8 +68,7 @@ export const NoteForm = ({setNotes, notes}:NoteFormType) =>{
                    value={title}
                 onChange={onInputChangeHandler}
             />
-            <textarea placeholder={'Description'}
-                      onInput={textareaHeight}
+            <input placeholder={'Description'}
                       style={textareaStyle}
                       value={content}
                       onClick={contentClicked}
@@ -72,7 +76,9 @@ export const NoteForm = ({setNotes, notes}:NoteFormType) =>{
                       onKeyDown={onHashClick}
             />
             <button onClick={onAddClickHandler}>Add</button>
-            {tags}
+            {tags.map((el,index )=> {
+                return <span key={index} style={{marginRight:10}}>{el}</span>
+            })}
         </div>
     )
 }
