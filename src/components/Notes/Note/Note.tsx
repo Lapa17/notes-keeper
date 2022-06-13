@@ -17,15 +17,15 @@ export const Note = ({dispatch, note, onDeleteClickHandler}:NotePropsType) => {
     return (
       <div style={{width:200, border:'1px solid', margin: 10}}>
           <div>
-              {note.noteTitle}
+              {note.title}
           </div>
           <div>
-              {note.noteDescription}
+              {note.description}
           </div>
           <button onClick={onDeleteClick}> Delete</button>
           <div>
               {note.tags.length > 0 && note.tags.map(el=> {
-                  return <Tag key={el} dispatch={dispatch}>{el}</Tag>}
+                  return <Tag key={el} tag={el} note={note}>{el}</Tag>}
               )}
           </div>
       </div>

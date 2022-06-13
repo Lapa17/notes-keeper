@@ -2,6 +2,7 @@ import {NoteType} from "../components/Notes/Notes";
 import {v1} from "uuid";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {notesAPI} from "../api/app-api";
+import {ReactNode} from "react";
 
 
 
@@ -9,38 +10,36 @@ export type ActionType = {
     type: string
     payload: any
 }
-//
-// export const appReducer = (state:Array<NoteType>, action:ActionType) => {
-//     switch (action.type){
-//         case 'Add':{
-//             const newNote = {id: v1(),
-//                 title:action.payload.noteTitle,
-//                 description: action.payload.noteDescription,
-//                 tags:action.payload.tags}
-//             const newState = [...state,newNote]
-//             localStorage.setItem('notes',JSON.stringify(newState))
-//             return newState
-//         }
-//         case 'Delete':{
-//             const filteredNotes = state.filter(el => el.id !== action.payload)
-//             localStorage.setItem('notes',JSON.stringify(filteredNotes))
-//             return filteredNotes
-//         }
-//         case 'FilteredByTag':{
-//             return state.filter(el => {
-//                 return el.tags.find(tg => tg === action.payload.value) ? el : ''})
-//         }
-//         case 'ResetFilter':{
-//             return [...action.payload.state]
-//         }
-//         default: return state
-//     }
-// }
-
 
 export const initializeAppTC = createAsyncThunk('app/initializeApp', async (param, {dispatch, rejectWithValue}) => {
     const res = await notesAPI.getNotes(null)
     return res.data
+})
+
+export const filterNoteTC = createAsyncThunk('app/filterNote', async (param:{tag:ReactNode}, {dispatch, rejectWithValue}) => {
+    const res = await notesAPI.getNotes(param.tag)
+    return res.data
+})
+
+export const deleteNoteTC = createAsyncThunk('app/deleteNote', async (param:{ id: string }, {dispatch, rejectWithValue}) => {
+    const res = await notesAPI.deleteNote(param.id)
+    return dispatch(initializeAppTC())
+})
+
+export const deleteTagTC = createAsyncThunk('app/deleteTag', async (
+    param:{ note: NoteType, tag: string }, {dispatch, rejectWithValue, getState}) => {
+    const res = await notesAPI.updateNote({
+        id: param.note.id,
+        title: param.note.title,
+        description: param.note.description,
+        tags: param.note.tags.filter(el => el !== param.tag)
+    })
+    return dispatch(initializeAppTC())
+})
+export const addNoteTC = createAsyncThunk('app/addNote', async (
+    param:{ id: string, title:string, description:string, tags:Array<string>}, {dispatch, rejectWithValue}) => {
+    const res = await notesAPI.addNote({id: param.id, title: param.title, description: param.description, tags:param.tags} )
+    return dispatch(initializeAppTC())
 })
 
 const slice = createSlice({
@@ -52,6 +51,10 @@ const slice = createSlice({
             const newState = [...action.payload]
             return state = newState
         })
+        builder.addCase(filterNoteTC.fulfilled, (state, action) => {
+                const newState = [...action.payload]
+                return state = newState
+            })
     }
 })
 

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {ReactNode} from "react";
 
 const instance = axios.create({
     baseURL: 'http://localhost:3001/notes',
@@ -10,14 +11,26 @@ const instance = axios.create({
 
 // api
 export const notesAPI = {
-    getNotes(tag:string | null) {
+    getNotes(tag:ReactNode | null) {
         return instance.get(tag ?`?tags_like=${tag}`: '');
     },
-    addNote(id:string, title:string, description:string, tags:Array<string>){
-        return instance.post('', {id, title, description, tags})
+    addNote(payload:{id:string, title:string, description:string, tags:Array<string>}){
+        return instance.post('', {
+            id:payload.id,
+            title:payload.title,
+            description:payload.description,
+            tags:payload.tags})
     },
     deleteNote(id:string) {
         return instance.delete(`/${id}`);
+    },
+    updateNote(payload:{id:string, title:string, description:string, tags:Array<string>}) {
+        debugger
+        return instance.put(`/${payload.id}`, {
+            id:payload.id,
+            title:payload.title,
+            description:payload.description,
+            tags:payload.tags})
     },
 }
 

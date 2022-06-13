@@ -1,25 +1,30 @@
 import {ChangeEvent, useState, KeyboardEvent, Dispatch} from "react";
 import {NoteType} from "../Notes";
-import {ActionType} from "../../../state/reducer";
+import {ActionType, addNoteTC} from "../../../state/reducer";
+import {useAppDispatch} from "../../../state/store";
+import {v1} from "uuid";
 
 type NoteFormType = {
     notes: Array<NoteType>
-    dispatch:Dispatch<ActionType>
 }
 
-export const NoteForm = ({notes, dispatch}:NoteFormType) =>{
+export const NoteForm = ({notes}:NoteFormType) =>{
     const [content, setContent] = useState('')
     const [title, setTitle] = useState('')
     const [editTag, setEditTag] = useState<boolean>(false)
     const [tags, setTags] = useState<Array<string>>([])
     const [tag, setTag] = useState<string>('')
 
+    const dispatch = useAppDispatch()
+
 
     function contentChanged(e:ChangeEvent<HTMLInputElement> ) {
         setContent(e.target.value);
         if(editTag){
             //@ts-ignore
-            setTag(tag + e.nativeEvent.data)
+                setTag(tag + e.nativeEvent.data)
+
+
         }
     }
 
@@ -36,11 +41,12 @@ export const NoteForm = ({notes, dispatch}:NoteFormType) =>{
     }
 
     function onAddClickHandler() {
-        dispatch({type:'Add', payload:{
-                noteTitle:title,
-                noteDescription: content,
-                tags,
-            }})
+        dispatch(addNoteTC({
+            id:v1(),
+            title,
+            description: content,
+            tags,
+        }))
         setTags([])
         setTitle('')
         setContent('')
