@@ -1,51 +1,34 @@
-import {ChangeEvent, useState, MouseEvent, KeyboardEvent} from "react";
+import {ChangeEvent, useState, KeyboardEvent, Dispatch} from "react";
 import {NoteType} from "../Notes";
-import {v1} from "uuid";
+import {ActionType} from "../../../state/reducer";
 
 type NoteFormType = {
-    setNotes:(params:Array<NoteType> )=> void
     notes: Array<NoteType>
+    dispatch:Dispatch<ActionType>
 }
 
-export const NoteForm = ({setNotes, notes}:NoteFormType) =>{
+export const NoteForm = ({notes, dispatch}:NoteFormType) =>{
     const [content, setContent] = useState('')
     const [title, setTitle] = useState('')
     const [editTag, setEditTag] = useState<boolean>(false)
-    const [tags, setTags] = useState<Array<string>>([''])
+    const [tags, setTags] = useState<Array<string>>([])
     const [tag, setTag] = useState<string>('')
-    const [textareaStyle, setTextareaStyle] = useState<any>({
-        textAlign: "justfiy",
-        width:'100%'
-    });
 
-    function textareaHeight(e:ChangeEvent<HTMLTextAreaElement>) {
-        setTextareaStyle({
-            ...textareaStyle,
-            //height: e.target.scrollHeight + "px",
-            textAlign: "justfiy",
-            maxHeight: "500px",
-        })
-    }
 
     function contentChanged(e:ChangeEvent<HTMLInputElement> ) {
         setContent(e.target.value);
         if(editTag){
             //@ts-ignore
             setTag(tag + e.nativeEvent.data)
-            console.log(tag)
         }
     }
 
-    function contentClicked(e:MouseEvent<HTMLInputElement>) {
-        // settyping(true);
-        // setcontent(e.currentTarget);
-    }
 
     function onHashClick(e:KeyboardEvent<HTMLInputElement>){
         if(e.key === '#'){
             setEditTag(true)
         }
-        if(e.key === ' '){
+        if(e.key === ' ' && editTag){
             setTags([tag, ...tags])
             setTag('')
             setEditTag(false)
@@ -53,8 +36,14 @@ export const NoteForm = ({setNotes, notes}:NoteFormType) =>{
     }
 
     function onAddClickHandler() {
-        const newNote = {id: v1(), noteTitle:title, noteDescription: content, tags}
-        setNotes([...notes,newNote])
+        dispatch({type:'Add', payload:{
+                noteTitle:title,
+                noteDescription: content,
+                tags,
+            }})
+        setTags([])
+        setTitle('')
+        setContent('')
     }
 
     function onInputChangeHandler(e:ChangeEvent<HTMLInputElement>) {
@@ -69,14 +58,12 @@ export const NoteForm = ({setNotes, notes}:NoteFormType) =>{
                 onChange={onInputChangeHandler}
             />
             <input placeholder={'Description'}
-                      style={textareaStyle}
                       value={content}
-                      onClick={contentClicked}
                       onChange={contentChanged}
                       onKeyDown={onHashClick}
             />
             <button onClick={onAddClickHandler}>Add</button>
-            {tags.map((el,index )=> {
+            { tags.length > 0 && tags.map((el,index )=> {
                 return <span key={index} style={{marginRight:10}}>{el}</span>
             })}
         </div>

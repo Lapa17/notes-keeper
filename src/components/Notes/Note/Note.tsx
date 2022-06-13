@@ -1,15 +1,19 @@
 import {NoteType} from "../Notes";
+import {Tag} from "../Tag/Tag";
+import {Dispatch} from "react";
+import {ActionType} from "../../../state/reducer";
 
 type NotePropsType = {
     note: NoteType
     onDeleteClickHandler:(id:string)=> void
+    dispatch:Dispatch<ActionType>
 }
 
-export const Note = ({note, onDeleteClickHandler}:NotePropsType) => {
+
+export const Note = ({dispatch, note, onDeleteClickHandler}:NotePropsType) => {
     function onDeleteClick() {
         onDeleteClickHandler(note.id)
     }
-    debugger
     return (
       <div style={{width:200, border:'1px solid', margin: 10}}>
           <div>
@@ -20,7 +24,9 @@ export const Note = ({note, onDeleteClickHandler}:NotePropsType) => {
           </div>
           <button onClick={onDeleteClick}> Delete</button>
           <div>
-              {note.tags[0] && note.tags.map(el=> <span key={note.id} style={{marginLeft:10}}>{el}</span>)}
+              {note.tags.length > 0 && note.tags.map(el=> {
+                  return <Tag key={el} dispatch={dispatch}>{el}</Tag>}
+              )}
           </div>
       </div>
   )

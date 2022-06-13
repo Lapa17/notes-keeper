@@ -1,7 +1,8 @@
 import {NoteForm} from "./NoteForm/NoteForm";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useReducer, useState} from "react";
 import {Note} from "./Note/Note";
-import {v1} from "uuid";
+import {Context} from "../../state/context";
+import reducer from "../../state/reducer";
 
 export type NoteType = {
     id: string
@@ -12,25 +13,26 @@ export type NoteType = {
 
 
 export const Notes = () => {
-    const initialNotes = localStorage.getItem('notes')
-    const [notes, setNotes] = useState<Array<NoteType>>(JSON.parse(initialNotes as string))
-    useEffect(()=>{
-        localStorage.setItem('notes',JSON.stringify(notes))
-    }, [notes])
+
+    const initialNotes = useContext(Context)
+    const [state, dispatch] = useReducer(reducer, initialNotes)
 
     const onDeleteClickHandler = (id:string) => {
-        const filteredNotes = notes.filter(el => el.id !== id)
-        setNotes(filteredNotes)
-        localStorage.setItem('notes',JSON.stringify(notes))
+        dispatch({type:'Delete', payload: id})
+    }
+    const resetFilterHelper = () => {
+        dispatch({type:'ResetFilter', payload: {state:initialNotes}})
     }
 
     return (
         <div>
             <h1>Notes</h1>
-            <NoteForm setNotes={setNotes} notes={notes}/>
-            {notes && notes.map((el) => <Note key={el.id}
+            <button onClick={resetFilterHelper}>Reset filter</button>
+            <NoteForm notes={state} dispatch={dispatch}/>
+            {state && state.map((el) => <Note key={el.id}
                                               note={el}
                                               onDeleteClickHandler={onDeleteClickHandler}
+                                              dispatch={dispatch}
             />)}
         </div>
     )
