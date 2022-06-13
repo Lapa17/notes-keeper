@@ -10,8 +10,14 @@ const instance = axios.create({
 
 // api
 export const notesAPI = {
-    getNotes() {
-        return instance.get('');
+    getNotes(tag:string | null) {
+        return instance.get(tag ?`?tags_like=${tag}`: '');
+    },
+    addNote(id:string, title:string, description:string, tags:Array<string>){
+        return instance.post('', {id, title, description, tags})
+    },
+    deleteNote(id:string) {
+        return instance.delete(`/${id}`);
     },
 }
 

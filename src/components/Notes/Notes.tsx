@@ -1,8 +1,8 @@
 import {NoteForm} from "./NoteForm/NoteForm";
-import {useContext, useEffect, useReducer, useState} from "react";
 import {Note} from "./Note/Note";
-import {Context} from "../../state/context";
-import reducer from "../../state/reducer";
+import {initializeAppTC} from "../../state/reducer";
+import {useAppDispatch, useAppSelector} from "../../state/store";
+import {useEffect} from "react";
 
 export type NoteType = {
     id: string
@@ -14,14 +14,22 @@ export type NoteType = {
 
 export const Notes = () => {
 
-    const initialNotes = useContext(Context)
-    const [state, dispatch] = useReducer(reducer, initialNotes)
+    const state = useAppSelector(state => state.app)
+    const dispatch = useAppDispatch()
+
+    useEffect(()=>{
+        dispatch(initializeAppTC())
+    },[state])
 
     const onDeleteClickHandler = (id:string) => {
         dispatch({type:'Delete', payload: id})
+        // notesAPI.deleteNote('ax9R0Tj').then(res => {
+        //     debugger
+        // })
     }
     const resetFilterHelper = () => {
-        dispatch({type:'ResetFilter', payload: {state:initialNotes}})
+        dispatch(initializeAppTC())
+        // dispatch({type:'ResetFilter', payload: {state:initialNotes}})
     }
 
     return (

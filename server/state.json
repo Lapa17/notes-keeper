@@ -17,10 +17,20 @@
       ]
     },
     {
-      "title": "foo",
-      "body": "bar",
-      "userId": 1,
-      "id": "ax9R0Tj"
+      "id": "1ae9d501-eaf2-11ec-b4ea-659cc376a4a2",
+      "noteTitle": "1231231",
+      "noteDescription": "12312 #123",
+      "tags": [
+        "#123"
+      ]
+    },
+    {
+      "id": "1ae9d501-eaf2-11ec-b4ea-659cc376a4a3",
+      "noteTitle": "1231231",
+      "noteDescription": "12312 #123",
+      "tags": [
+        "#123"
+      ]
     }
   ]
 }

@@ -9,10 +9,12 @@ import {notesAPI} from "./api/app-api";
 function App() {
     const initialNotes:Array<NoteType> = JSON.parse(localStorage.getItem('notes') as string)
     const onAxiosClick = () => {
-        notesAPI.getNotes().then(res => {
+        notesAPI.getNotes(null).then(res => {
             debugger
         })
     }
+
+
     return (
         <Context.Provider value={initialNotes}>
         <div>
