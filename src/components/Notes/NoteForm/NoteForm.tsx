@@ -23,8 +23,6 @@ export const NoteForm = ({notes}:NoteFormType) =>{
         if(editTag){
             //@ts-ignore
                 setTag(tag + e.nativeEvent.data)
-
-
         }
     }
 

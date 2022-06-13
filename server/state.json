@@ -2,9 +2,11 @@
   "notes": [
     {
       "id": "e249fb80-eaf1-11ec-9a33-25e728beff8e",
-      "title": "qweq",
-      "description": "tags #tag",
+      "title": "qweqasd",
+      "description": "tags #tag #122 #123 ",
       "tags": [
+        "#123",
+        "#122",
         "#tag"
       ]
     },
@@ -40,12 +42,6 @@
         "#123",
         "#tagbbbb"
       ]
-    },
-    {
-      "id": "99349580-eb1a-11ec-a33f-c5612a0d3498",
-      "title": "1231231",
-      "description": "#123 ",
-      "tags": []
     }
   ]
 }

@@ -23,7 +23,7 @@ export const filterNoteTC = createAsyncThunk('app/filterNote', async (param:{tag
 
 export const deleteNoteTC = createAsyncThunk('app/deleteNote', async (param:{ id: string }, {dispatch, rejectWithValue}) => {
     const res = await notesAPI.deleteNote(param.id)
-    return dispatch(initializeAppTC())
+    return {id:param.id}
 })
 
 export const deleteTagTC = createAsyncThunk('app/deleteTag', async (
@@ -33,6 +33,17 @@ export const deleteTagTC = createAsyncThunk('app/deleteTag', async (
         title: param.note.title,
         description: param.note.description,
         tags: param.note.tags.filter(el => el !== param.tag)
+    })
+    return dispatch(initializeAppTC())
+})
+
+export const saveNoteTC = createAsyncThunk('app/saveNote', async (
+    param:{ id: string, title:string, description:string, tags:Array<string> }, {dispatch, rejectWithValue, getState}) => {
+    const res = await notesAPI.updateNote({
+        id: param.id,
+        title: param.title,
+        description: param.description,
+        tags: param.tags
     })
     return dispatch(initializeAppTC())
 })
@@ -54,6 +65,9 @@ const slice = createSlice({
         builder.addCase(filterNoteTC.fulfilled, (state, action) => {
                 const newState = [...action.payload]
                 return state = newState
+            })
+        builder.addCase(deleteNoteTC.fulfilled, (state, action) => {
+                return state.filter(el => el.id !== action.payload.id)
             })
     }
 })

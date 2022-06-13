@@ -36,7 +36,6 @@ export const Notes = () => {
             {state && state.map((el) => <Note key={el.id}
                                               note={el}
                                               onDeleteClickHandler={onDeleteClickHandler}
-                                              dispatch={dispatch}
             />)}
         </div>
     )
