@@ -4,6 +4,8 @@ import {ChangeEvent, Dispatch, KeyboardEvent, useState} from "react";
 import {ActionType, addNoteTC, deleteNoteTC, saveNoteTC} from "../../../state/reducer";
 import {v1} from "uuid";
 import {useAppDispatch} from "../../../state/store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAd, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
 type NotePropsType = {
     note: NoteType
@@ -17,6 +19,7 @@ export const Note = ({ note}: NotePropsType) => {
     const [editTag, setEditTag] = useState<boolean>(false)
     const [tags, setTags] = useState<Array<string>>(note.tags)
     const [tag, setTag] = useState<string>('')
+    const [showEditMenu, setShowEditMenu] = useState<boolean>(false)
 
     const dispatch = useAppDispatch()
 
@@ -58,30 +61,36 @@ export const Note = ({ note}: NotePropsType) => {
     function onDeleteNoteClickHandler() {
         dispatch(deleteNoteTC({id:note.id}))
     }
-
+    function showEditMenuHandler() {
+        setShowEditMenu(!showEditMenu)
+    }
     function editNote(value:boolean) {
         setEditMode(value)
     }
-
+    //"fa-solid fa-ellipsis-vertical"
     return (
         <div className='note--container'>
-            <div >
-                <div>
+            <div>
+                <div className='note--container--title'>
                     {note.title}
                 </div>
-                <div>
+                <div className='note--container--description'>
                     {note.description}
                 </div>
-                <button onClick={onDeleteNoteClickHandler}> Delete</button>
-                <div>
+                <div className="tag--container">
                     {note.tags.length > 0 && note.tags.map(el => {
                             return <Tag key={el} tag={el} note={note}>{el}</Tag>
                         }
                     )}
                 </div>
-                <button onClick={() => editNote(true)}>Edit</button>
+                
+                <div className='edit--button' onClick={() => showEditMenuHandler()}><FontAwesomeIcon icon={faEllipsisVertical} /></div>
 
             </div>
+            {showEditMenu && <div className="edit--menu">
+                <div className='edit--menu--li'onClick={() => editNote(true)}>Edit note</div>
+                <div className='edit--menu--li' onClick={onDeleteNoteClickHandler}>Delete note</div>
+                </div>}
             {editMode &&
             <div style={{
                 width: '100%',

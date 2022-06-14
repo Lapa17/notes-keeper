@@ -32,8 +32,8 @@ export const Tag = ({note,children, tag, onDeleteFormTagHandler}: TagPropsType) 
 
     const filterHelper = () => {
         if(note){
-            const slicedTag = tag.slice(1)
-            dispatch(filterNoteTC({tag: slicedTag}))
+            // const slicedTag = tag.slice(1)
+            dispatch(filterNoteTC({tag: tag}))
         }
         
     }
@@ -45,7 +45,7 @@ export const Tag = ({note,children, tag, onDeleteFormTagHandler}: TagPropsType) 
              onMouseLeave={e => toggleHover(e, false)}
         >
             <span>{children}</span>
-             {hovered && <DeleteButton className={'delete--tag'} onClick={onDeleteTagClick}>x</DeleteButton>}
+             {hovered && <DeleteButton className={'delete--tag'} onClick={onDeleteTagClick}>+</DeleteButton>}
         </div>
     );
 }

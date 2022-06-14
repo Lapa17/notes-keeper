@@ -25,7 +25,7 @@ export const NoteForm = ({ notes }: NoteFormType) => {
     function contentChanged(e: ChangeEvent<HTMLInputElement>) {
         setContent(e.target.value);
         //@ts-ignore
-        if (editTag && e.nativeEvent.data !== null) {
+        if (editTag && e.nativeEvent.data !== null && e.nativeEvent.data !== '#') {
             //@ts-ignore
             setTag(tag + e.nativeEvent.data)
         }
