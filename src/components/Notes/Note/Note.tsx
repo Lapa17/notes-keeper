@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAd, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "../../Modals/Modal";
 import { FormInput } from "../../FormInput/FormInput";
+import { Highlighted } from "../../Higlight";
 
 type NotePropsType = {
     note: NoteType
@@ -86,6 +87,12 @@ export const Note = ({ note }: NotePropsType) => {
                 <div className='note--container--description'>
                     {note.description}
                 </div>
+                <Highlighted 
+                        text={note.description}
+                        highlight={note.tags[0]}
+                    />
+        
+                
                 <div className="tag--container">
                     {note.tags.length > 0 && note.tags.map(el => {
                         return <Tag key={el} tag={el} note={note}>{el}</Tag>

@@ -73,21 +73,20 @@ export const NoteForm = ({ notes }: NoteFormType) => {
     }
 
     return (
-        <div className='noteForm'>
+        <div className='noteForm' >
             <div className='noteForm--content'>
-                {isWritable &&
                     <FormInput placeholder={'Заголовок'}
                         value={title}
-                        onChange={onInputChangeHandler} />
-                }
+                        onChange={onInputChangeHandler} 
+                        className='noteForm--content--title'/>
+                
                 <FormInput placeholder={'Заметка..'}
                     onClick={onNoteClickHandler}
                     value={content}
                     onChange={contentChanged}
-                    onKeyDown={onHashClick} />
-                {isWritable && 
-                <AddButton onClick={onAddClickHandler}>+</AddButton>}
-                {/* <button onClick={onAddClickHandler}>Add</button> */}
+                    onKeyDown={onHashClick} 
+                    />
+                <AddButton onClick={onAddClickHandler}>+</AddButton>
                 {tags.length > 0 && tags.map((el, index) => {
                     return <Tag key={index}  tag={el} onDeleteFormTagHandler={onDeleteFormTagHandler}>{el}</Tag>
                 })}
