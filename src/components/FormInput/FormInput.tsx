@@ -15,6 +15,6 @@ export const FormInput = (props: FormInputPropsType) => {
             value={props.value}
             onChange={props.onChange}
             onKeyDown={props.onKeyDown}
-            className='form--input'
+            className={`form--input ${props.className}`}
         />)
 }

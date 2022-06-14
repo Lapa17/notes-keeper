@@ -2,10 +2,10 @@
     border: 1px solid rgba(85, 82, 82, 0.3490196078);
     margin: 10px;
     border-radius: 10px;
-    padding: 10px;
+    padding: 20px 20px 10px;
     position: relative;
-    min-width: 170px;
-    max-width: 350px;
+    min-width: 15%;
+    max-width: 25%;
     transition: 0.5s;
     &:hover{
         box-shadow: 0px 1px 5px 1px rgb(85 82 82 / 35%);

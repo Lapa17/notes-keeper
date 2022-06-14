@@ -1,18 +1,20 @@
-import {NoteType} from "../Notes";
-import {Tag} from "../Tag/Tag";
-import {ChangeEvent, Dispatch, KeyboardEvent, useState} from "react";
-import {ActionType, addNoteTC, deleteNoteTC, saveNoteTC} from "../../../state/reducer";
-import {v1} from "uuid";
-import {useAppDispatch} from "../../../state/store";
+import { NoteType } from "../Notes";
+import { Tag } from "../Tag/Tag";
+import { ChangeEvent, Dispatch, KeyboardEvent, useEffect, useState } from "react";
+import { ActionType, addNoteTC, deleteNoteTC, saveNoteTC } from "../../../state/reducer";
+import { v1 } from "uuid";
+import { useAppDispatch } from "../../../state/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAd, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { Modal } from "../../Modals/Modal";
+import { FormInput } from "../../FormInput/FormInput";
 
 type NotePropsType = {
     note: NoteType
 }
 
 
-export const Note = ({ note}: NotePropsType) => {
+export const Note = ({ note }: NotePropsType) => {
 
     const [content, setContent] = useState(note.description)
     const [title, setTitle] = useState(note.title)
@@ -20,54 +22,61 @@ export const Note = ({ note}: NotePropsType) => {
     const [tags, setTags] = useState<Array<string>>(note.tags)
     const [tag, setTag] = useState<string>('')
     const [showEditMenu, setShowEditMenu] = useState<boolean>(false)
+    const [editMode, setEditMode] = useState<boolean>(false)
 
     const dispatch = useAppDispatch()
 
-    function contentChanged(e:ChangeEvent<HTMLInputElement> ) {
+    function contentChanged(e: ChangeEvent<HTMLInputElement>) {
         setContent(e.target.value);
-        if(editTag){
+        //@ts-ignore
+        if (editTag && e.nativeEvent.data !== null && e.nativeEvent.data !== '#') {
             //@ts-ignore
             setTag(tag + e.nativeEvent.data)
         }
     }
 
-    function onHashClick(e:KeyboardEvent<HTMLInputElement>){
-        if(e.key === '#'){
+    function onHashClick(e: KeyboardEvent<HTMLInputElement>) {
+        if (e.key === '#') {
             setEditTag(true)
         }
-        if(e.key === ' ' && editTag){
+        if (e.key === ' ' && editTag) {
             setTags([tag, ...tags])
             setTag('')
             setEditTag(false)
         }
+        if (e.key === 'Backspace') {
+            setTag(tag.slice(0, tag.length - 1))
+        }
     }
-    function onInputChangeHandler(e:ChangeEvent<HTMLInputElement>) {
+    function onInputChangeHandler(e: ChangeEvent<HTMLInputElement>) {
         setTitle(e.currentTarget.value)
     }
     function saveNoteHandler() {
         dispatch(saveNoteTC({
-            id:note.id,
+            id: note.id,
             title,
             description: content,
             tags,
         }))
-        // setTags([])
-        // setTitle('')
-        // setContent('')
+        setEditMode(false)
     }
 
-    const [editMode, setEditMode] = useState<boolean>(false)
+    
 
     function onDeleteNoteClickHandler() {
-        dispatch(deleteNoteTC({id:note.id}))
+        dispatch(deleteNoteTC({ id: note.id }))
     }
     function showEditMenuHandler() {
         setShowEditMenu(!showEditMenu)
     }
-    function editNote(value:boolean) {
+    function onEditNoteClickHandler(value: boolean) {
         setEditMode(value)
+        setShowEditMenu(false)
+        setContent(note.description)
+        setTitle(note.title)
+        setTags(note.tags)
     }
-    //"fa-solid fa-ellipsis-vertical"
+
     return (
         <div className='note--container'>
             <div>
@@ -79,51 +88,30 @@ export const Note = ({ note}: NotePropsType) => {
                 </div>
                 <div className="tag--container">
                     {note.tags.length > 0 && note.tags.map(el => {
-                            return <Tag key={el} tag={el} note={note}>{el}</Tag>
-                        }
+                        return <Tag key={el} tag={el} note={note}>{el}</Tag>
+                    }
                     )}
                 </div>
-                
+
                 <div className='edit--button' onClick={() => showEditMenuHandler()}><FontAwesomeIcon icon={faEllipsisVertical} /></div>
 
             </div>
             {showEditMenu && <div className="edit--menu">
-                <div className='edit--menu--li'onClick={() => editNote(true)}>Edit note</div>
+                <div className='edit--menu--li' onClick={()=>onEditNoteClickHandler(true)}>Edit note</div>
                 <div className='edit--menu--li' onClick={onDeleteNoteClickHandler}>Delete note</div>
-                </div>}
-            {editMode &&
-            <div style={{
-                width: '100%',
-                height: '100vh',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                zIndex: 20,
-                background: '#00000082'
-            }}>
-                <div style={{
-                    width: '500px',
-                    height: '200px',
-                    position: "absolute",
-                    top: '35%',
-                    left: '35%',
-                    padding:20,
-                    background: 'white'
-                }}>
-
-                    <input value={title} onChange={onInputChangeHandler}/>
-                    <input onChange={contentChanged}
-                           onKeyDown={onHashClick}
-                           value={content}/>
-                    <button onClick={onDeleteNoteClickHandler}> Delete</button>
+            </div>}
+            {editMode && <div className="modal">
+                <div className="modal--container">
+                    <FormInput className='modal--title' value={title} onChange={onInputChangeHandler} placeholder={'Title'}/>
+                    <FormInput value={content} onChange={contentChanged} onKeyDown={onHashClick} placeholder={'Content'}/>
                     <div>
                         {tags.map(el => {
-                                return <Tag key={el} tag={el} note={note}>{el}</Tag>
-                            }
+                            return <Tag key={el} tag={el} note={note}>{el}</Tag>
+                        }
                         )}
                     </div>
-                    <button onClick={() => editNote(false)}>Close </button>
-                    <button onClick={saveNoteHandler}>Save </button>
+                    <div className='modal--close' onClick={() => onEditNoteClickHandler(false)}>+</div>
+                    <div className='modal--save' onClick={saveNoteHandler}>Save </div>
                 </div>
             </div>}
         </div>)
