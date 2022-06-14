@@ -1,6 +1,11 @@
 .note--container{
     width: 20%;
-    border: 1px solid black;
+    border: 1px solid rgba(85, 82, 82, 0.3490196078);
     margin: 10px;
-    
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0px 1px 5px 1px rgb(85 82 82 / 35%);
+    position: relative;
+    min-width: 180px;
+    position: relative;
 }

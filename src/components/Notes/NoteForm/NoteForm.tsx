@@ -4,6 +4,8 @@ import { ActionType, addNoteTC } from "../../../state/reducer";
 import { useAppDispatch } from "../../../state/store";
 import { v1 } from "uuid";
 import { FormInput } from "../../FormInput/FormInput";
+import { Tag } from "../Tag/Tag";
+import { AddButton } from "../../Buttons/AddButton/AddButton";
 
 type NoteFormType = {
     notes: Array<NoteType>
@@ -66,6 +68,10 @@ export const NoteForm = ({ notes }: NoteFormType) => {
         setTitle(e.currentTarget.value)
     }
 
+    function onDeleteFormTagHandler(tag:string){
+        setTags(tags.filter(el => el !== tag))
+    }
+
     return (
         <div className='noteForm'>
             <div className='noteForm--content'>
@@ -79,9 +85,11 @@ export const NoteForm = ({ notes }: NoteFormType) => {
                     value={content}
                     onChange={contentChanged}
                     onKeyDown={onHashClick} />
-                {isWritable && <button onClick={onAddClickHandler}>Add</button>}
+                {isWritable && 
+                <AddButton onClick={onAddClickHandler}>+</AddButton>}
+                {/* <button onClick={onAddClickHandler}>Add</button> */}
                 {tags.length > 0 && tags.map((el, index) => {
-                    return <span key={index} style={{ marginRight: 10 }}>{el}</span>
+                    return <Tag key={index}  tag={el} onDeleteFormTagHandler={onDeleteFormTagHandler}>{el}</Tag>
                 })}
             </div>
         </div>

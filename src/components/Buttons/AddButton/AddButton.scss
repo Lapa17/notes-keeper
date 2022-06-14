@@ -1,0 +1,21 @@
+.add--button {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    background: #b1b1e3;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.7rem;
+    cursor: pointer;
+    transition: 0.4s;
+    
+    &:hover{
+        background: #9393dd;
+        box-shadow: 0px 1px 5px 1px rgb(85 82 82 / 35%);
+    }
+}
