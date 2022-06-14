@@ -1,17 +1,16 @@
 import {NoteType} from "../Notes";
 import {Tag} from "../Tag/Tag";
 import {ChangeEvent, Dispatch, KeyboardEvent, useState} from "react";
-import {ActionType, addNoteTC, saveNoteTC} from "../../../state/reducer";
+import {ActionType, addNoteTC, deleteNoteTC, saveNoteTC} from "../../../state/reducer";
 import {v1} from "uuid";
 import {useAppDispatch} from "../../../state/store";
 
 type NotePropsType = {
     note: NoteType
-    onDeleteClickHandler: (id: string) => void
 }
 
 
-export const Note = ({ note, onDeleteClickHandler}: NotePropsType) => {
+export const Note = ({ note}: NotePropsType) => {
 
     const [content, setContent] = useState(note.description)
     const [title, setTitle] = useState(note.title)
@@ -56,8 +55,8 @@ export const Note = ({ note, onDeleteClickHandler}: NotePropsType) => {
 
     const [editMode, setEditMode] = useState<boolean>(false)
 
-    function onDeleteClick() {
-        onDeleteClickHandler(note.id)
+    function onDeleteNoteClickHandler() {
+        dispatch(deleteNoteTC({id:note.id}))
     }
 
     function editNote(value:boolean) {
@@ -65,15 +64,15 @@ export const Note = ({ note, onDeleteClickHandler}: NotePropsType) => {
     }
 
     return (
-        <div>
-            <div style={{width: 200, border: '1px solid', margin: 10}}>
+        <div className='note--container'>
+            <div >
                 <div>
                     {note.title}
                 </div>
                 <div>
                     {note.description}
                 </div>
-                <button onClick={onDeleteClick}> Delete</button>
+                <button onClick={onDeleteNoteClickHandler}> Delete</button>
                 <div>
                     {note.tags.length > 0 && note.tags.map(el => {
                             return <Tag key={el} tag={el} note={note}>{el}</Tag>
@@ -107,7 +106,7 @@ export const Note = ({ note, onDeleteClickHandler}: NotePropsType) => {
                     <input onChange={contentChanged}
                            onKeyDown={onHashClick}
                            value={content}/>
-                    <button onClick={onDeleteClick}> Delete</button>
+                    <button onClick={onDeleteNoteClickHandler}> Delete</button>
                     <div>
                         {tags.map(el => {
                                 return <Tag key={el} tag={el} note={note}>{el}</Tag>

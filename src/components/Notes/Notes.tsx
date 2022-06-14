@@ -21,22 +21,18 @@ export const Notes = () => {
         dispatch(initializeAppTC())
     },[])
 
-    const onDeleteClickHandler = (id:string) => {
-        dispatch(deleteNoteTC({id}))
-    }
     const resetFilterHelper = () => {
         dispatch(initializeAppTC())
     }
 
     return (
-        <div>
+        <div >
             <h1>Notes</h1>
             <button onClick={resetFilterHelper}>Reset filter</button>
             <NoteForm notes={state} />
-            {state && state.map((el) => <Note key={el.id}
-                                              note={el}
-                                              onDeleteClickHandler={onDeleteClickHandler}
-            />)}
+            <div className="notes--container">
+            {state && state.map((el) => <Note key={el.id} note={el} />)}
+            </div>
         </div>
     )
 }
