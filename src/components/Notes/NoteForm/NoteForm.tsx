@@ -1,6 +1,6 @@
 import { ChangeEvent, useState, KeyboardEvent, Dispatch } from "react";
 import { NoteType } from "../Notes";
-import { ActionType, addNoteTC } from "../../../state/reducer";
+import { addNoteTC } from "../../../state/reducer";
 import { useAppDispatch } from "../../../state/store";
 import { v1 } from "uuid";
 import { FormInput } from "../../FormInput/FormInput";
@@ -68,27 +68,27 @@ export const NoteForm = ({ notes }: NoteFormType) => {
         setTitle(e.currentTarget.value)
     }
 
-    function onDeleteFormTagHandler(tag:string){
+    function onDeleteFormTagHandler(tag: string) {
         setTags(tags.filter(el => el !== tag))
     }
 
     return (
         <div className='noteForm' >
             <div className='noteForm--content'>
-                    <FormInput placeholder={'Заголовок'}
-                        value={title}
-                        onChange={onInputChangeHandler} 
-                        className='noteForm--content--title'/>
-                
+                <FormInput placeholder={'Заголовок'}
+                    value={title}
+                    onChange={onInputChangeHandler}
+                    className='noteForm--content--title' />
+
                 <FormInput placeholder={'Заметка..'}
                     onClick={onNoteClickHandler}
                     value={content}
                     onChange={contentChanged}
-                    onKeyDown={onHashClick} 
-                    />
+                    onKeyDown={onHashClick}
+                />
                 <AddButton onClick={onAddClickHandler}>+</AddButton>
                 {tags.length > 0 && tags.map((el, index) => {
-                    return <Tag key={index}  tag={el} onDeleteFormTagHandler={onDeleteFormTagHandler}>{el}</Tag>
+                    return <Tag key={index} tag={el} onDeleteFormTagHandler={onDeleteFormTagHandler}>{el}</Tag>
                 })}
             </div>
         </div>

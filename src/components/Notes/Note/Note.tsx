@@ -1,11 +1,10 @@
 import { NoteType } from "../Notes";
 import { Tag } from "../Tag/Tag";
-import { ChangeEvent, Dispatch, KeyboardEvent, useEffect, useState } from "react";
-import { ActionType, addNoteTC, deleteNoteTC, saveNoteTC } from "../../../state/reducer";
-import { v1 } from "uuid";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { deleteNoteTC, saveNoteTC } from "../../../state/reducer";
 import { useAppDispatch } from "../../../state/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAd, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "../../Modals/Modal";
 import { FormInput } from "../../FormInput/FormInput";
 import { Highlighted } from "../../Higlight";
@@ -62,7 +61,7 @@ export const Note = ({ note }: NotePropsType) => {
         setEditMode(false)
     }
 
-    
+
 
     function onDeleteNoteClickHandler() {
         dispatch(deleteNoteTC({ id: note.id }))
@@ -77,6 +76,9 @@ export const Note = ({ note }: NotePropsType) => {
         setTitle(note.title)
         setTags(note.tags)
     }
+    function onDeleteFormTagHandler(tag: string) {
+        setTags(tags.filter(el => el !== tag))
+    }
 
     return (
         <div className='note--container'>
@@ -87,12 +89,12 @@ export const Note = ({ note }: NotePropsType) => {
                 <div className='note--container--description'>
                     {note.description}
                 </div>
-                <Highlighted 
+                {/* <Highlighted 
                         text={note.description}
                         highlight={note.tags[0]}
-                    />
-        
-                
+                    /> */}
+
+
                 <div className="tag--container">
                     {note.tags.length > 0 && note.tags.map(el => {
                         return <Tag key={el} tag={el} note={note}>{el}</Tag>
@@ -104,16 +106,16 @@ export const Note = ({ note }: NotePropsType) => {
 
             </div>
             {showEditMenu && <div className="edit--menu">
-                <div className='edit--menu--li' onClick={()=>onEditNoteClickHandler(true)}>Edit note</div>
+                <div className='edit--menu--li' onClick={() => onEditNoteClickHandler(true)}>Edit note</div>
                 <div className='edit--menu--li' onClick={onDeleteNoteClickHandler}>Delete note</div>
             </div>}
             {editMode && <div className="modal">
                 <div className="modal--container">
-                    <FormInput className='modal--title' value={title} onChange={onInputChangeHandler} placeholder={'Title'}/>
-                    <FormInput value={content} onChange={contentChanged} onKeyDown={onHashClick} placeholder={'Content'}/>
+                    <FormInput className='modal--title' value={title} onChange={onInputChangeHandler} placeholder={'Title'} />
+                    <FormInput value={content} onChange={contentChanged} onKeyDown={onHashClick} placeholder={'Content'} />
                     <div>
                         {tags.map(el => {
-                            return <Tag key={el} tag={el} note={note}>{el}</Tag>
+                            return <Tag key={el} tag={el} onDeleteFormTagHandler={onDeleteFormTagHandler}>{el}</Tag>
                         }
                         )}
                     </div>

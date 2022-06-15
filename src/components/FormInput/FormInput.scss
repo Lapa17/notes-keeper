@@ -1,7 +1,7 @@
 .form--input{
     border: none;
     padding: 10px;
-    border-radius:10px;
+    border-radius:$border-radius;
     width: 100%;
     &:focus-visible{
         outline: none;

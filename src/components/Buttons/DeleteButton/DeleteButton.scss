@@ -7,7 +7,7 @@
     border-radius: 50%;
     border: none;
     color: white;
-    background: #b1b1e3;
+    background: $prime;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,7 +16,7 @@
     transform: rotate(45deg);
     font-size: 17px;
     &:hover{
-        background: #9393dd;
-        box-shadow: 0px 1px 5px 1px rgb(85 82 82 / 35%);
+        background: $prime-hover ;
+        box-shadow: $box-shadow
     }
 }

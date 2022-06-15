@@ -1,14 +1,14 @@
+
 .note--container{
     border: 1px solid rgba(85, 82, 82, 0.3490196078);
     margin: 10px;
-    border-radius: 10px;
+    border-radius: $border-radius;
     padding: 20px 20px 10px;
     position: relative;
-    min-width: 15%;
-    max-width: 25%;
+    width: 22%;
     transition: 0.5s;
     &:hover{
-        box-shadow: 0px 1px 5px 1px rgb(85 82 82 / 35%);
+        box-shadow: $box-shadow;
     }
     &--title{
         font-weight: 600;
@@ -16,23 +16,32 @@
     &--description{
         margin:10px 0;
     }
+    @media (max-width: $laptop) {
+        width: 30%;
+    }
+    @media (max-width: $tablet) {
+        width: 45%;
+    }
+    @media (max-width: $mobile) {
+        width: 90%;
+    }
 }
 
 .edit--menu{
     position: absolute;
     background: white;
     z-index: 20;
-    top: -85px;
-    right: -91px;
+    top: 33px;
+    right: 0px;
     padding: 10px 0;
-    box-shadow: 0px 1px 5px 1px rgb(85 82 82 / 35%);
-    border-radius: 10px;
+    box-shadow: $box-shadow;
+    border-radius: $border-radius;
     &--li{
         padding: 10px;
         cursor: pointer;
         transition: 0.5s;
         &:hover{
-            background: #b1b1e3;
+            background: $prime;
             color: white;
         }
     }

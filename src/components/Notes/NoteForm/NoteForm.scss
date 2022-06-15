@@ -1,3 +1,5 @@
+
+
 .noteForm {
     display: flex;
     align-items: center;
@@ -7,7 +9,7 @@
 
 .noteForm--content{
     border: 1px solid #55525259;
-    border-radius: 10px;
+    border-radius: $border-radius;
     width: 400px;
     display: flex;
     flex-wrap: wrap;
@@ -17,5 +19,8 @@
     &--title {
         font-size: 20px;
         font-weight: 500;
+    }
+    @media (max-width: $mobile) {
+        width: 90%;
     }
 }

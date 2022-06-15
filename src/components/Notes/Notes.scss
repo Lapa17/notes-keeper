@@ -1,5 +1,27 @@
-.notes--container{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content:center;
+.notes {
+    &--container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    &--initialized--container {
+        text-align: center;
+
+    }
+
+    &--initialized {
+        display: inline-block;
+        color: white;
+        padding: 10px;
+        background: $prime;
+        border-radius: $border-radius;
+        cursor: pointer;
+        transition: 0.4s;
+
+        &:hover {
+            background: $prime-hover;
+            box-shadow: $box-shadow;
+        }
+    }
 }

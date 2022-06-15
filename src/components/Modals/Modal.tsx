@@ -5,11 +5,11 @@ type ModalPropsType = {
     onTitlesChangeHandler:()=>void
 
 }
-
+//Пока весь функционал оставил в компоненте Note
 export const Modal = () => {
     return <div className="modal">
         <div className="modal--container">
-
+            
             {/* <input value={title} onChange={onInputChangeHandler}/>
             <input onChange={contentChanged}
                    onKeyDown={onHashClick}

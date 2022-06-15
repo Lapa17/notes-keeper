@@ -25,7 +25,6 @@ export const notesAPI = {
         return instance.delete(`/${id}`);
     },
     updateNote(payload:{id:string, title:string, description:string, tags:Array<string>}) {
-        debugger
         return instance.put(`/${payload.id}`, {
             id:payload.id,
             title:payload.title,

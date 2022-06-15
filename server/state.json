@@ -12,20 +12,19 @@
     {
       "id": "3f78a020-ebe9-11ec-861b-97fda0dcb4fe",
       "title": "",
-      "description": "Делаю тестовые заметки #test #title #test ",
+      "description": "Делаю тестовые заметки #test #title #test #123 ",
       "tags": [
+        "123",
         "title"
       ]
     },
     {
       "id": "6c9ba610-ebe9-11ec-861b-97fda0dcb4fe",
       "title": "Какой-то заголовок",
-      "description": "Описfние заметки нужно 2 строки попробую потестить как растягивается  #asd #test #desc #title #toobigtagfortest ",
+      "description": "Описfние заметки нужно 2 строки попробую потестить как растягивается  #asd #test #desc #title #sometag  ",
       "tags": [
-        "toobigtagfortest",
-        "title",
-        "desc",
-        "asd"
+        "sometag",
+        "toobigtagfortest"
       ]
     },
     {
@@ -61,6 +60,15 @@
       "tags": [
         "note",
         "little"
+      ]
+    },
+    {
+      "id": "0483af00-ecd9-11ec-ab48-cf11d91635f0",
+      "title": "Новая заметка",
+      "description": "заметка к стилям адаптива #adptive #styles ",
+      "tags": [
+        "styles",
+        "adptive"
       ]
     }
   ]

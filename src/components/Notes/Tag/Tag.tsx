@@ -1,18 +1,18 @@
-import {ReactNode, MouseEvent, useState} from "react";
-import {useAppDispatch} from "../../../state/store";
-import {deleteTagTC, filterNoteTC} from "../../../state/reducer";
-import {NoteType} from "../Notes";
+import { ReactNode, MouseEvent, useState } from "react";
+import { useAppDispatch } from "../../../state/store";
+import { deleteTagTC, filterNoteTC } from "../../../state/reducer";
+import { NoteType } from "../Notes";
 import { DeleteButton } from "../../Buttons/DeleteButton/DeleteButton";
 
 type TagPropsType = {
     children: ReactNode | string
     tag: string
-    note?:NoteType
-    onDeleteFormTagHandler?:(tag:string)=>void
+    note?: NoteType
+    onDeleteFormTagHandler?: (tag: string) => void
 }
 
 
-export const Tag = ({note,children, tag, onDeleteFormTagHandler}: TagPropsType) => {
+export const Tag = ({ note, children, tag, onDeleteFormTagHandler }: TagPropsType) => {
     const dispatch = useAppDispatch()
     const [hovered, setHovered] = useState<boolean>(false)
 
@@ -21,31 +21,31 @@ export const Tag = ({note,children, tag, onDeleteFormTagHandler}: TagPropsType) 
     }
 
     const onDeleteTagClick = () => {
-        if(note){
-            dispatch(deleteTagTC({note, tag}))
+        if (note) {
+            dispatch(deleteTagTC({ note, tag }))
         }
-        else if (onDeleteFormTagHandler){
+        else if (onDeleteFormTagHandler) {
             onDeleteFormTagHandler(tag)
         }
-       
+
     }
 
     const filterHelper = () => {
-        if(note){
+        if (note) {
             // const slicedTag = tag.slice(1)
-            dispatch(filterNoteTC({tag: tag}))
+            dispatch(filterNoteTC({ tag: tag }))
         }
-        
+
     }
 
     return (
         <div onClick={filterHelper}
-             className='tag'
-             onMouseEnter={e => toggleHover(e, true)}
-             onMouseLeave={e => toggleHover(e, false)}
+            className='tag'
+            onMouseEnter={e => toggleHover(e, true)}
+            onMouseLeave={e => toggleHover(e, false)}
         >
             <span>{children}</span>
-             {hovered && <DeleteButton className={'delete--tag'} onClick={onDeleteTagClick}>+</DeleteButton>}
+            {hovered && <DeleteButton className={'delete--tag'} onClick={onDeleteTagClick}>+</DeleteButton>}
         </div>
     );
 }
