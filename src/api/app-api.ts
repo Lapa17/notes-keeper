@@ -2,7 +2,7 @@ import axios from 'axios'
 import {ReactNode} from "react";
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3001/notes',
+    baseURL: 'https://server-notes-keeper-lapa.herokuapp.com/notes',
     withCredentials: true,
     headers: {
         'Content-type': 'application/json; charset=UTF-8'
